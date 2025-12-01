@@ -25,8 +25,7 @@ win_conditions = [
 
 # "Empties" the console
 def clear():
-    for i in range(60):
-        print("")
+    print("\n"*60)
 
 # Main menu/Game mode selection        
 def player_selection():
