@@ -3,8 +3,10 @@ import time
 import random
 
 # Variables 
+
 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+# All the possibles patterns to win
 win_conditions = [
     # Horizontal
     [0, 1, 2],  
@@ -21,11 +23,12 @@ win_conditions = [
     [2, 4, 6]  
 ]
 
-# Empties the console
+# "Empties" the console
 def clear():
     for i in range(60):
         print("")
-        
+
+# Main menu/Game mode selection        
 def player_selection():
     clear()
     print("Tic Tac Toe")
@@ -40,6 +43,7 @@ def player_selection():
     else:
         player_selection()
 
+# Displays the grid in a formated way
 def displaygrid_cli():
     clear()
     global grid
@@ -61,6 +65,7 @@ def displaygrid_cli():
         print(line)
     print("-------------")
 
+# Lets you start a new game or stop the program
 def replay():
     print("")
     match input("Vous voulez rejouer (Oui/Non) : ").lower():
@@ -73,10 +78,12 @@ def replay():
         case _:
             replay()
 
+# Function that manages the placement of the symbols
 def placesymbol(value):
 
     global grid
 
+    # Player 1 block
     if value == "player1":
         print("")
         place = input("Joueur 1, où voulez-vous placer votre symbole (1-9) : ")
@@ -169,6 +176,8 @@ def placesymbol(value):
                 time.sleep(3)
                 displaygrid_cli()
                 placesymbol(value)
+
+    # Player 2 block
     elif value == "player2":
         print("")
         place = input("Joueur 2, où voulez-vous placer votre symbole (1-9) : ")
@@ -260,9 +269,12 @@ def placesymbol(value):
                 time.sleep(3)
                 displaygrid_cli()
                 placesymbol(value)
+
+    # Bot block                
     else:
         grid[int(value)] = "O"
 
+# Algorithm for the bot to choose a cell
 def ordinateur(board, signe):
 
     print("")
@@ -277,6 +289,7 @@ def ordinateur(board, signe):
     else:
         return False
 
+# Checks if someone has won or not
 def checkvictory(grid, symbol, player):
     for combo in win_conditions:
         if all(grid[i] == symbol for i in combo):
@@ -287,6 +300,7 @@ def checkvictory(grid, symbol, player):
             return True
     return False
 
+# Function that manages the other functions when playing in single-player mode
 def player_solo_play():
 
     global grid
@@ -316,7 +330,8 @@ def player_solo_play():
         print("")
         print("Égalité !")
         return replay()
-    
+
+# Function that manages the other functions when playing in two-player mode
 def player_duo_play():
 
     global grid
