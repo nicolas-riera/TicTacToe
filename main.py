@@ -166,7 +166,7 @@ def placesymbol(value):
         match place:
             case "1":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -174,7 +174,7 @@ def placesymbol(value):
                     player_solo_play()
             case "2":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -182,7 +182,7 @@ def placesymbol(value):
                     player_solo_play()
             case "3":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -190,7 +190,7 @@ def placesymbol(value):
                     player_solo_play()
             case "4":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -198,7 +198,7 @@ def placesymbol(value):
                     player_solo_play()
             case "5":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -206,7 +206,7 @@ def placesymbol(value):
                     player_solo_play()
             case "6":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -214,7 +214,7 @@ def placesymbol(value):
                     player_solo_play()
             case "7":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -222,7 +222,7 @@ def placesymbol(value):
                     player_solo_play()
             case "8":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -230,7 +230,7 @@ def placesymbol(value):
                     player_solo_play()
             case "9":
                 if grid[int(place)-1] == 0:
-                    grid[int(place)-1] = "X"
+                    grid[int(place)-1] = "O"
                 else:
                     print("")
                     print("Case déjà remplie")
@@ -295,6 +295,34 @@ def player_solo_play():
         print("")
         print("Égalité !")
         return replay()
+    
+def player_duo_play():
+
+    global grid
+
+    displaygrid_cli()
+    placesymbol("player1")
+
+    if checkvictory(grid, "X", "Joueur 1"):
+        return replay()
+
+    if not(0 in grid):
+        print("")
+        print("Égalité !")
+        return replay()
+
+    displaygrid_cli()
+    placesymbol("player2")
+
+    if checkvictory(grid, "O", "Joueur 2"):
+        return replay()
+
+    if 0 in grid:
+        return True
+    else:
+        print("")
+        print("Égalité !")
+        return replay()
 
 # Main program
 
@@ -307,4 +335,7 @@ if player_selection() == 1:
 
 else:
     while True:
-        print("")
+        if player_duo_play():
+            continue
+        else:
+            break
