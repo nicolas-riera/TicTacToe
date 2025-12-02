@@ -1,5 +1,6 @@
 # Librairies
 from ressources.game import *
+import time
 import pygame
 import os
 
@@ -81,9 +82,7 @@ def displaygrid_gui(screen):
             screen.blit(X_symbol_scaled, X_symbol_rect) 
         elif grid[i] == "O":
             O_symbol_rect = O_symbol.get_rect(topleft=index_display_positions[i])    
-            screen.blit(O_symbol_scaled, O_symbol_rect)      
-
-           
+            screen.blit(O_symbol_scaled, O_symbol_rect)
 
 def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
 
@@ -96,7 +95,9 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
         player1_turn = my_fonts[0].render("Joueur 1, à ton tour !", True, (0, 0, 0))
         screen.blit(player1_turn, (282, 755))
     elif value == "player2":
-        symbol = "O" 
+        symbol = "O"
+        player1_turn = my_fonts[0].render("Joueur 2, à ton tour !", True, (0, 0, 0))
+        screen.blit(player1_turn, (282, 755)) 
 
     # Hitboxes coordonnees
     index_display_hitboxes = [
@@ -105,44 +106,70 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
         ((50, 518), (280, 748)), ((290, 518), (510, 748)), ((520, 518), (747, 748))
     ]
 
+    cursor_set = False
     for i in range(len(grid)):
-        match pygame.mouse.get_pos():
-            case (x, y) if index_display_hitboxes[i][0][0] <= x <= index_display_hitboxes[i][1][0] and index_display_hitboxes[i][0][1] <= y <= index_display_hitboxes[i][1][1]:
-                if mouse_clicked and grid[i] == 0:
-                   pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                   grid[i] = symbol
-                   player1_has_played = True
-                   bot_has_played = False
-                elif grid[i] == 0:
-                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+
+        x, y = pygame.mouse.get_pos()
         
-            case _:
+        if index_display_hitboxes[i][0][0] <= x <= index_display_hitboxes[i][1][0] and index_display_hitboxes[i][0][1] <= y <= index_display_hitboxes[i][1][1]:
+            if mouse_clicked and grid[i] == 0:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-    
-    pygame.display.flip()
+                grid[i] = symbol
+                player1_has_played = True
+                bot_has_played = False
+            elif grid[i] == 0:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            cursor_set = True
+            break
+
+    if not cursor_set:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+    pygame.display.flip()  
     
     return checkvictory(grid, "X", None, False)
 
-def placesymbol_bot_gui():
+def placesymbol_bot_gui(screen, my_fonts):
 
     global player1_has_played
     global bot_has_played
+
+    screen.fill("white")
+    displaygrid_gui(screen)
+
+    player1_turn = my_fonts[0].render("L'ordinateur réfléchit...", True, (0, 0, 0))
+    screen.blit(player1_turn, (282, 755))
+
+    pygame.display.flip() 
+
+    time.sleep(2)
 
     grid[ordinateur(grid, "O", False)] = "O"
     player1_has_played = False
     bot_has_played = True
 
+    return checkvictory(grid, "O", None, False)
 
 def player_solo_play_gui(screen, mouse_clicked, my_fonts):
+
+    player1_won = False
+    bot_won = False
 
     displaygrid_gui(screen)
 
     if not(player1_has_played):
         player1_won = placesymbol_player_gui("player1", screen, mouse_clicked, my_fonts)
 
-    if not(bot_has_played):
-        bot_won = placesymbol_bot_gui()
-    
-    
+    displaygrid_gui(screen)
 
+    if 0 in grid and not(player1_won):
+        if not(bot_has_played):
+            bot_won = placesymbol_bot_gui(screen, my_fonts)
+
+    # faire handling victoire
+
+    else:
+        pass # faire handling replay
+
+    return player1_won, bot_won
     

@@ -33,6 +33,8 @@ else:
     # Variables
     game_mode = None
     mouse_clicked = False
+    player1_won = False
+    bot_won = False
 
     # pygame setup
     pygame.init()
@@ -69,18 +71,19 @@ else:
 
         elif game_mode == 1:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
-                player_solo_play_gui(screen, mouse_clicked, my_fonts)
+                player1_won, bot_won = player_solo_play_gui(screen, mouse_clicked, my_fonts)
             else:
                 displaygrid_gui(screen)
                 
         elif game_mode == 2:
             "placeholder 2 players"
 
-        else:
-            "placeholder end"
+        elif game_mode == 3:
+            "end screen"
+
+        if player1_won or bot_won:
+            game_mode = 3
 
         pygame.display.flip()
-
-        clock.tick(60)
 
     pygame.quit()
