@@ -2,8 +2,8 @@
 cli_mode = False
 
 # Librairies
-from game import *
-from game_gui import *
+from ressources.game import *
+from ressources.game_gui import *
 import pygame
 
 # cli mode
