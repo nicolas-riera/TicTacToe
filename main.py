@@ -35,6 +35,7 @@ else:
     mouse_clicked = False
     player1_won = False
     bot_won = False
+    winner = ""
 
     # pygame setup
     pygame.init()
@@ -81,8 +82,12 @@ else:
         elif game_mode == 3:
             "end screen"
 
-        if player1_won or bot_won:
+        if player1_won:
             game_mode = 3
+            winner = "player1"
+        elif bot_won:
+            game_mode = 3
+            winner = "bot"
 
         pygame.display.flip()
 
