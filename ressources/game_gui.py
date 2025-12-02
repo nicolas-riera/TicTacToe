@@ -1,10 +1,11 @@
+from ressources.game import *
 import pygame
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def main_menu(screen, my_fonts, mouse_clicked):
-                          
+
     logo_title = pygame.image.load(os.path.join(BASE_DIR, "images", "logo_title.png"))
     logo_title_rect = logo_title.get_rect(center=(650, 500))
     logo_title_scaled = pygame.transform.scale(logo_title, (logo_title.get_size()[0]*0.5, logo_title.get_size()[1]*0.5))
@@ -28,3 +29,20 @@ def main_menu(screen, my_fonts, mouse_clicked):
     pygame.display.flip()
 
     return None
+
+def displaygrid_gui(screen):
+
+    global grid
+
+    screen.fill("white")
+
+    pygame.draw.rect(screen, (0, 0, 0), (280, 50, 10, 700))
+    pygame.draw.rect(screen, (0, 0, 0), (510, 50, 10, 700))
+    pygame.draw.rect(screen, (0, 0, 0), (50, 280, 700, 10))
+    pygame.draw.rect(screen, (0, 0, 0), (50, 510, 700, 10))
+
+    pygame.display.flip()
+
+def player_solo_play_gui(screen):
+
+    displaygrid_gui(screen)

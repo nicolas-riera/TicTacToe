@@ -63,22 +63,14 @@ else:
         if game_mode is None:
             game_mode = main_menu(screen, my_fonts, mouse_clicked)
 
-        elif game_mode == 1:
-            # Loop for single-player mode
-            print("11")
-            while True:
-                if "placeholder":
-                    continue
-                else:
-                    break
+        elif game_mode == 1: 
+            player_solo_play_gui(screen)
+                
+        elif game_mode == 2:
+            "placeholder 2 players"
+
         else:
-            # Loop for two-player mode
-            print("22")
-            while True:
-                if "placeholder":
-                    continue
-                else:
-                    break
+            "placeholder end"
 
         pygame.display.flip()
 
