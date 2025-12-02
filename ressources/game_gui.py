@@ -170,9 +170,9 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
     elif (not 0 in grid) and not(player1_won):
         return False, False, True
 
-    return player1_won, bot_won, draw # A CHANGER
+    return player1_won, bot_won, draw
 
-def end_screen(screen, winner, my_fonts):
+def end_screen(screen, winner, my_fonts, mouse_clicked):
     
     displaygrid_gui(screen)
     end_screen_fade = pygame.Surface((800, 800))
@@ -185,7 +185,7 @@ def end_screen(screen, winner, my_fonts):
     winner_text = ""
 
     match winner:
-        case "player1":
+        case "player11" | "player12":
             winner_text = "Joueur 1"
         case "player2":
             winner_text = "Joueur 2"
@@ -194,9 +194,47 @@ def end_screen(screen, winner, my_fonts):
         case _:
             winner_text = "Dinnerbone"
 
-    if winner == "draw":
-        winner_text_display = my_fonts[0].render("Égalité !", True, (0, 0, 0))
+    if winner == "draw1" or winner == "draw2":
+        winner_text_display = my_fonts[1].render("Égalité !", True, (0, 0, 0))
+        screen.blit(winner_text_display, (328, 315))
     else:
-        winner_text_display = my_fonts[0].render(f"{winner_text} a gagné !", True, (0, 0, 0))
+        winner_text_display = my_fonts[1].render(f"{winner_text} a gagné !", True, (0, 0, 0))
+        screen.blit(winner_text_display, (230, 315))
 
-    screen.blit(winner_text_display, (290, 280))
+    pygame.draw.rect(screen, (255, 107, 107), (160, 450, 203, 80))
+    pygame.draw.rect(screen, (107, 137, 255), (430, 450, 203, 80))
+    replay_button = my_fonts[0].render("Rejouer", True, (0, 0, 0))
+    screen.blit(replay_button, (218, 470))
+    gotomenu_button = my_fonts[0].render("Menu", True, (0, 0, 0))
+    screen.blit(gotomenu_button, (500, 470))
+
+    if 450 <= pygame.mouse.get_pos()[1] <= 540:
+        if 161 <= pygame.mouse.get_pos()[0] <= 363:
+            if mouse_clicked and (winner == "player11" or winner == "bot" or winner == "draw1"):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                screen.fill("white")
+                global grid
+                grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
+                displaygrid_gui(screen)
+                pygame.display.flip() 
+                time.sleep(1)
+                return "replay1j"
+            elif mouse_clicked and (winner == "player12" or winner == "player2" or winner == "draw2"):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                return "replay2j"
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+
+        elif 429 <= pygame.mouse.get_pos()[0] <= 633:
+            if mouse_clicked :
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                screen.fill("white")
+                main_menu(screen, my_fonts, False)
+                time.sleep(1)
+                return "menu"
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)

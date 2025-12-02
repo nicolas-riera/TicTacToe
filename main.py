@@ -37,6 +37,7 @@ else:
     bot_won = False
     winner = ""
     draw = ""
+    action = None
 
     # pygame setup
     pygame.init()
@@ -75,6 +76,29 @@ else:
 
         # Main game logic
 
+        # End screen menu action
+        match action:
+            case "replay1j":
+                game_mode = 1
+                player1_won = False
+                bot_won = False
+                winner = ""
+                draw = ""
+                reset_game()
+                action = None
+            case "replay2j":
+                "todo"
+            case "menu":
+                game_mode = None
+                player1_won = False
+                bot_won = False
+                winner = ""
+                draw = ""
+                reset_game()
+                action = None
+            case _:
+                pass
+
         if game_mode is None:
             game_mode, time_count_when_started = main_menu(screen, my_fonts, mouse_clicked)
 
@@ -88,17 +112,21 @@ else:
             "placeholder 2 players"
 
         elif game_mode == 3:
-            end_screen(screen, winner, my_fonts)
+            action = end_screen(screen, winner, my_fonts, mouse_clicked)
 
         if player1_won:
-            game_mode = 3
-            winner = "player1"
+            if game_mode == 1:
+                game_mode = 3
+                winner = "player11"
+            elif game_mode == 2:
+                game_mode = 3
+                winner = "player12"
         elif bot_won:
             game_mode = 3
             winner = "bot"
         elif draw:
             game_mode = 3
-            winner = "draw"
+            winner = "draw1"
 
         pygame.display.flip()
 
