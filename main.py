@@ -58,16 +58,20 @@ else:
             if event.type == pygame.KEYDOWN:
                 if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                     game_mode = None
+                    reset_game()
 
         screen.fill("white")
 
-        # Main program
+        # Main game logic
 
         if game_mode is None:
-            game_mode = main_menu(screen, my_fonts, mouse_clicked)
+            game_mode, time_count_when_started = main_menu(screen, my_fonts, mouse_clicked)
 
         elif game_mode == 1:
-            player_solo_play_gui(screen, mouse_clicked)
+            if pygame.time.get_ticks() - time_count_when_started >= 500:
+                player_solo_play_gui(screen, mouse_clicked, my_fonts)
+            else:
+                displaygrid_gui(screen)
                 
         elif game_mode == 2:
             "placeholder 2 players"

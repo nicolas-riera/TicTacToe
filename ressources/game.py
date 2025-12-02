@@ -27,6 +27,10 @@ win_conditions = [
 def clear():
     print("\n"*60)
 
+def reset_grid():
+    global grid # necessary to edit the global variable
+    grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 # Main menu/Game mode selection        
 def player_selection():
     clear()
@@ -68,8 +72,7 @@ def replay():
     print("")
     match input("Vous voulez rejouer (Oui/Non) : ").lower():
         case "oui":
-            global grid # necessary to reset the list
-            grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            reset_grid()
             return True
         case "non":
             return False
@@ -126,13 +129,14 @@ def ordinateur(board, signe, cli_mode):
         return False
 
 # Checks if someone has won or not
-def checkvictory(grid, symbol, player):
+def checkvictory(grid, symbol, player, cli_mode):
     for combo in win_conditions:
         if all(grid[i] == symbol for i in combo):
-            displaygrid_cli()
-            print("")
-            print(f"{player} a gagné !")
-            time.sleep(1)
+            if cli_mode:
+                displaygrid_cli()
+                print("")
+                print(f"{player} a gagné !")
+                time.sleep(1)
             return True
     return False
 
@@ -142,7 +146,7 @@ def player_solo_play():
     displaygrid_cli()
     placesymbol("player1")
 
-    if checkvictory(grid, "X", "Joueur 1"):
+    if checkvictory(grid, "X", "Joueur 1", True):
         return replay()
 
     if not(0 in grid):
@@ -152,9 +156,9 @@ def player_solo_play():
         return replay()
 
     displaygrid_cli()
-    placesymbol(ordinateur(grid, "O", cli_mode=True))
+    placesymbol(ordinateur(grid, "O", True))
 
-    if checkvictory(grid, "O", "L'ordinateur"):
+    if checkvictory(grid, "O", "L'ordinateur", True):
         return replay()
 
     if 0 in grid:
@@ -171,7 +175,7 @@ def player_duo_play():
     displaygrid_cli()
     placesymbol("player1")
 
-    if checkvictory(grid, "X", "Joueur 1"):
+    if checkvictory(grid, "X", "Joueur 1", True):
         return replay()
 
     if not(0 in grid):
@@ -183,7 +187,7 @@ def player_duo_play():
     displaygrid_cli()
     placesymbol("player2")
 
-    if checkvictory(grid, "O", "Joueur 2"):
+    if checkvictory(grid, "O", "Joueur 2", True):
         return replay()
 
     if 0 in grid:
