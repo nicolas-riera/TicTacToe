@@ -5,6 +5,9 @@ cli_mode = False
 from ressources.game import *
 from ressources.game_gui import *
 import pygame
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # cli mode
 if cli_mode:
@@ -34,6 +37,8 @@ else:
     pygame.font.init()
     screen = pygame.display.set_mode((800, 800))
     pygame.display.set_caption("Tic Tac Toe, par Nicolas Riera")
+    logo_image = pygame.image.load(os.path.join(BASE_DIR, "ressources", "images", "logo.png"))
+    pygame.display.set_icon(logo_image)
     clock = pygame.time.Clock()
     my_fonts = pygame.font.SysFont('Arial', 30), pygame.font.SysFont('Arial', 50)
     running = True
