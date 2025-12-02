@@ -47,7 +47,7 @@ def displaygrid_cli():
     clear()
     print("-------------")
     for i in range(0, len(grid), 3):
-        line = "| "
+        line = "|"
         for j in range(i, i+3):
             match grid[j]:
                 case "X":
@@ -59,16 +59,16 @@ def displaygrid_cli():
                         line += f" {j+1} "
                     else:
                         line += "   "
-        line += " |"
+            line += "|"
         print(line)
-    print("-------------")
+        print("-------------")
 
 # Lets you start a new game or stop the program
 def replay():
     print("")
     match input("Vous voulez rejouer (Oui/Non) : ").lower():
         case "oui":
-            global grid
+            global grid # necessary to reset the list
             grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
             return True
         case "non":
