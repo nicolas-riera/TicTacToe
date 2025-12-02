@@ -170,10 +170,14 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
     elif (not 0 in grid):
         return False, False, True
 
-    return player1_won, bot_won, draw
+    return True, bot_won, draw # A CHANGER
 
-def end_screen(screen, winner):
+def end_screen(screen, winner, my_fonts):
     
     displaygrid_gui(screen)
-    screen.set_alpha(160)
-    pygame.display.flip()
+    end_screen_fade = pygame.Surface((800, 800))
+    end_screen_fade.fill((0, 0, 0))
+    end_screen_fade.set_alpha(160)
+    screen.blit(end_screen_fade, (0, 0))
+
+    pygame.draw.rect(screen, (255, 255, 255), (100, 250, 600, 300))

@@ -61,12 +61,15 @@ else:
                 mouse_clicked = False
             if event.type == pygame.KEYDOWN:
                 if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-                    game_mode = None
-                    player1_won = False
-                    bot_won = False
-                    winner = ""
-                    draw = ""
-                    reset_game()
+                    if game_mode != None:
+                        game_mode = None
+                        player1_won = False
+                        bot_won = False
+                        winner = ""
+                        draw = ""
+                        reset_game()
+                    else:
+                        running = False
 
         screen.fill("white")
 
@@ -85,7 +88,7 @@ else:
             "placeholder 2 players"
 
         elif game_mode == 3:
-            end_screen(screen, winner)
+            end_screen(screen, winner, my_fonts)
 
         if player1_won:
             game_mode = 3
