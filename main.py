@@ -1,5 +1,5 @@
 # Librairies
-from game import *
+from ressources.game import *
 
 # Main program
 
