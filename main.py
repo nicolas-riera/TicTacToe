@@ -34,6 +34,7 @@ else:
     game_mode = None
     mouse_clicked = False
     player1_won = False
+    player2_won = False
     bot_won = False
     winner = ""
     draw = ""
@@ -63,12 +64,7 @@ else:
             if event.type == pygame.KEYDOWN:
                 if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                     if game_mode != None:
-                        game_mode = None
-                        player1_won = False
-                        bot_won = False
-                        winner = ""
-                        draw = ""
-                        reset_game()
+                        action = "menu"
                     else:
                         running = False
 
@@ -77,27 +73,8 @@ else:
         # Main game logic
 
         # End screen menu action
-        match action:
-            case "replay1j":
-                game_mode = 1
-                player1_won = False
-                bot_won = False
-                winner = ""
-                draw = ""
-                reset_game()
-                action = None
-            case "replay2j":
-                "todo"
-            case "menu":
-                game_mode = None
-                player1_won = False
-                bot_won = False
-                winner = ""
-                draw = ""
-                reset_game()
-                action = None
-            case _:
-                pass
+        if action != None:
+            game_mode, player1_won, player2_won, bot_won, winner, draw, action = action_trigger(action)        
 
         if game_mode is None:
             game_mode, time_count_when_started = main_menu(screen, my_fonts, mouse_clicked)
@@ -114,19 +91,7 @@ else:
         elif game_mode == 3:
             action = end_screen(screen, winner, my_fonts, mouse_clicked)
 
-        if player1_won:
-            if game_mode == 1:
-                game_mode = 3
-                winner = "player11"
-            elif game_mode == 2:
-                game_mode = 3
-                winner = "player12"
-        elif bot_won:
-            game_mode = 3
-            winner = "bot"
-        elif draw:
-            game_mode = 3
-            winner = "draw1"
+        game_mode, winner = winner_trigger(player1_won, bot_won, draw, game_mode, winner)
 
         pygame.display.flip()
 

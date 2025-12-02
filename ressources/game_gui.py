@@ -8,12 +8,25 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 grid = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 player1_has_played = False
+player2_has_played = True
 bot_has_played = True
 
 # Image loading
 X_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "X.png"))
 O_symbol = pygame.image.load(os.path.join(BASE_DIR, "images", "O.png"))
 logo_title = pygame.image.load(os.path.join(BASE_DIR, "images", "logo_title.png"))
+
+def winner_trigger(player1_won, bot_won, draw, game_mode, winner):
+    if player1_won:
+        if game_mode == 1:
+            return 3, "player11"
+        elif game_mode == 2:
+            return 3, "player12"
+    elif bot_won:
+        return 3, "bot"
+    elif draw:
+        return 3, "draw1"
+    return game_mode, winner
 
 def reset_game():
     global grid
@@ -23,6 +36,20 @@ def reset_game():
     grid = [0, 0, 0, 0, 0, 0, 0, 0, 0] 
     player1_has_played = False
     bot_has_played = True
+
+def action_trigger(action):
+    match action:
+        case "replay1j":
+            reset_game()
+            return 1, False, False, False, "", "", None
+        case "replay2j":
+            reset_game()
+            return 2, False, False, False, "", "", None
+        case "menu":
+            reset_game()
+            return None, False, False, False, "", "", None
+        case _:
+            pass
 
 def main_menu(screen, my_fonts, mouse_clicked):
 
@@ -168,10 +195,9 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
             bot_won = placesymbol_bot_gui(screen, my_fonts)
 
     elif (not 0 in grid) and not(player1_won):
-        time.sleep(1)
-        return False, False, True
+        draw = True
 
-    if player1_won or bot_won:
+    if player1_won or bot_won or draw:
         screen.fill("white")
         displaygrid_gui(screen)
         pygame.display.flip()
@@ -244,3 +270,5 @@ def end_screen(screen, winner, my_fonts, mouse_clicked):
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
     else:
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+    return None
