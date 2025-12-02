@@ -170,7 +170,7 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
     elif (not 0 in grid):
         return False, False, True
 
-    return True, bot_won, draw # A CHANGER
+    return player1_won, bot_won, draw # A CHANGER
 
 def end_screen(screen, winner, my_fonts):
     
@@ -181,3 +181,22 @@ def end_screen(screen, winner, my_fonts):
     screen.blit(end_screen_fade, (0, 0))
 
     pygame.draw.rect(screen, (255, 255, 255), (100, 250, 600, 300))
+
+    winner_text = ""
+
+    match winner:
+        case "player1":
+            winner_text = "Joueur 1"
+        case "player2":
+            winner_text = "Joueur 2"
+        case "bot":
+            winner_text = "L'ordinateur"
+        case _:
+            winner_text = "Dinnerbone"
+
+    if winner == "draw":
+        winner_text_display = my_fonts[0].render("Égalité !", True, (0, 0, 0))
+    else:
+        winner_text_display = my_fonts[0].render(f"{winner_text} a gagné !", True, (0, 0, 0))
+
+    screen.blit(winner_text_display, (290, 280))
