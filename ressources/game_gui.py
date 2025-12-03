@@ -58,7 +58,7 @@ def action_trigger(action):
         case _:
             pass
 
-def ai_difficulty_popup(screen, my_fonts, mouse_clicked):
+def ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty):
 
     ai_difficulty_popup_screen_fade = pygame.Surface((800, 800))
     ai_difficulty_popup_screen_fade.fill((0, 0, 0))
@@ -70,6 +70,45 @@ def ai_difficulty_popup(screen, my_fonts, mouse_clicked):
     ai_difficulty_text = my_fonts[1].render("Choisissez une difficulté", True, (0, 0, 0))
     screen.blit(ai_difficulty_text, (185, 305))
 
+    pygame.draw.rect(screen, (107, 137, 255), (122, 450, 180, 80))
+    pygame.draw.rect(screen, (181, 122, 181), (311, 450, 180, 80))
+    pygame.draw.rect(screen, (255, 107, 107), (500, 450, 180, 80))
+
+    ai_easy_mode_button = my_fonts[0].render("Facile", True, (0, 0, 0))
+    screen.blit(ai_easy_mode_button, (180, 470))
+    ai_normal_mode_button = my_fonts[0].render("Normal", True, (0, 0, 0))
+    screen.blit(ai_normal_mode_button, (361, 470))
+    ai_hard_mode_button = my_fonts[0].render("Coming Soon", True, (0, 0, 0))
+    screen.blit(ai_hard_mode_button, (515, 470))
+
+    if ai_difficulty is None :
+        pygame.display.flip()
+        time.sleep(0.5)
+        return "wait"
+
+    if 450 <= pygame.mouse.get_pos()[1] <= 530:
+        if 122 <= pygame.mouse.get_pos()[0] <= 302:
+            if mouse_clicked:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                return 1
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
+        elif 312 <= pygame.mouse.get_pos()[0] <= 490:
+            if mouse_clicked:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                return 2
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
+        elif 501 <= pygame.mouse.get_pos()[0] <= 680:
+            if mouse_clicked:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                return 3
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND) 
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
     return "wait"
 
 def main_menu(screen, my_fonts, mouse_clicked, ai_difficulty):
@@ -87,13 +126,13 @@ def main_menu(screen, my_fonts, mouse_clicked, ai_difficulty):
     screen.blit(player2_button, (345, 580))
 
     if ai_difficulty == "wait":
-        return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked)
+        return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty)
 
     if 295 <= pygame.mouse.get_pos()[0] <= 497:
         if 449 <= pygame.mouse.get_pos()[1] <= 529:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked)
+                return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked, ai_difficulty)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)        
         elif 560 <= pygame.mouse.get_pos()[1] <= 639:
@@ -206,7 +245,7 @@ def placesymbol_player_gui(value, screen, mouse_clicked, my_fonts):
     
     return checkvictory(grid, symbol, None, False)
 
-def placesymbol_bot_gui(screen, my_fonts):
+def placesymbol_bot_gui(screen, my_fonts, ai_difficulty):
 
     global player1_has_played
     global bot_has_played
@@ -221,13 +260,13 @@ def placesymbol_bot_gui(screen, my_fonts):
 
     time.sleep(2)
 
-    grid[ordinateur(grid, "O", False)] = "O"
+    grid[ordinateur(grid, "O", False, ai_difficulty)] = "O"
     player1_has_played = False
     bot_has_played = True
 
     return checkvictory(grid, "O", None, False)
 
-def player_solo_play_gui(screen, mouse_clicked, my_fonts):
+def player_solo_play_gui(screen, mouse_clicked, my_fonts, ai_difficulty):
 
     player1_won = False
     bot_won = False
@@ -243,7 +282,7 @@ def player_solo_play_gui(screen, mouse_clicked, my_fonts):
 
     if 0 in grid and not(player1_won):
         if not(bot_has_played):
-            bot_won, win_combo = placesymbol_bot_gui(screen, my_fonts)
+            bot_won, win_combo = placesymbol_bot_gui(screen, my_fonts, ai_difficulty)
 
     elif (not 0 in grid) and not(player1_won):
         draw = True
@@ -349,7 +388,7 @@ def end_screen(screen, winner, my_fonts, mouse_clicked, win_combo):
             if mouse_clicked :
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 screen.fill("white")
-                main_menu(screen, my_fonts, False)
+                main_menu(screen, my_fonts, False, None)
                 time.sleep(0.5)
                 return "menu"
             else:

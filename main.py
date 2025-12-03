@@ -83,7 +83,7 @@ else:
 
         elif game_mode == 1:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
-                player1_won, bot_won, draw, win_combo = player_solo_play_gui(screen, mouse_clicked, my_fonts)
+                player1_won, bot_won, draw, win_combo = player_solo_play_gui(screen, mouse_clicked, my_fonts, ai_difficulty)
             else:
                 displaygrid_gui(screen)
                 
