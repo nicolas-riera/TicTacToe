@@ -58,7 +58,21 @@ def action_trigger(action):
         case _:
             pass
 
-def main_menu(screen, my_fonts, mouse_clicked):
+def ai_difficulty_popup(screen, my_fonts, mouse_clicked):
+
+    ai_difficulty_popup_screen_fade = pygame.Surface((800, 800))
+    ai_difficulty_popup_screen_fade.fill((0, 0, 0))
+    ai_difficulty_popup_screen_fade.set_alpha(160)
+    screen.blit(ai_difficulty_popup_screen_fade, (0, 0))
+
+    pygame.draw.rect(screen, (255, 255, 255), (100, 250, 600, 300))
+
+    ai_difficulty_text = my_fonts[1].render("Choisissez une difficulté", True, (0, 0, 0))
+    screen.blit(ai_difficulty_text, (185, 305))
+
+    return "wait"
+
+def main_menu(screen, my_fonts, mouse_clicked, ai_difficulty):
 
     logo_title_rect = logo_title.get_rect(center=(650, 500))
     logo_title_scaled = pygame.transform.scale(logo_title, (logo_title.get_size()[0]*0.5, logo_title.get_size()[1]*0.5))
@@ -72,17 +86,20 @@ def main_menu(screen, my_fonts, mouse_clicked):
     player2_button = my_fonts[0].render("2 Joueurs", True, (0, 0, 0))
     screen.blit(player2_button, (345, 580))
 
+    if ai_difficulty == "wait":
+        return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked)
+
     if 295 <= pygame.mouse.get_pos()[0] <= 497:
         if 449 <= pygame.mouse.get_pos()[1] <= 529:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                return 1, pygame.time.get_ticks()
+                return 1, pygame.time.get_ticks(), ai_difficulty_popup(screen, my_fonts, mouse_clicked)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)        
         elif 560 <= pygame.mouse.get_pos()[1] <= 639:
             if mouse_clicked:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                return 2, pygame.time.get_ticks()
+                return 2, pygame.time.get_ticks(), None
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
@@ -92,7 +109,7 @@ def main_menu(screen, my_fonts, mouse_clicked):
 
     pygame.display.flip()
 
-    return None, 0
+    return None, 0, None
 
 def displaygrid_gui(screen):
 

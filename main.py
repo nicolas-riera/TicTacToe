@@ -32,6 +32,7 @@ else:
 
     # Variables
     game_mode = None
+    ai_difficulty = None
     mouse_clicked = False
     player1_won = False
     player2_won = False
@@ -77,8 +78,8 @@ else:
         if action != None:
             game_mode, player1_won, player2_won, bot_won, winner, draw, action = action_trigger(action)        
 
-        if game_mode is None:
-            game_mode, time_count_when_started = main_menu(screen, my_fonts, mouse_clicked)
+        if game_mode is None or ai_difficulty == "wait":
+            game_mode, time_count_when_started, ai_difficulty = main_menu(screen, my_fonts, mouse_clicked, ai_difficulty)
 
         elif game_mode == 1:
             if pygame.time.get_ticks() - time_count_when_started >= 500:
