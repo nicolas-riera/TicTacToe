@@ -54,6 +54,17 @@ Le jeu propose un mode un joueur contre l’ordinateur ainsi qu’un mode deux j
 
 ---
 
+## Changer entre pygame et cli
+
+1. Ouvrez `main.py`avec un éditeur de texte
+2. Changer la variable `cli_mode` entre `True` et `False` :
+
+`cli_mode = False`
+
+`False` lancera la version pygame, `True` lancera la version cli
+
+---
+
 ## Algorithmes de l’IA
 - **Facile** : choix aléatoire parmi les cases libres.
 - **Normal** : logique simple pour gagner ou bloquer le joueur.
